@@ -1,0 +1,8 @@
+{
+  "name": "genuary-2026",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "create:sketches": "node scripts/create-sketches.js prompts_2024.json"
+  }
+}
