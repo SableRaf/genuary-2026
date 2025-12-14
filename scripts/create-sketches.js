@@ -9,8 +9,33 @@ const SKETCHES_DIR = path.join(ROOT_DIR, 'sketches');
 const DEFAULT_PROMPTS_PATH = path.join(ROOT_DIR, 'prompts.json');
 const PROMPTS_KEY = 'genuaryPrompts';
 
+function isUrl(input) {
+    try {
+        const url = new URL(input);
+        return url.protocol === 'http:' || url.protocol === 'https:';
+    } catch {
+        return false;
+    }
+}
+
+async function fetchFromUrl(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
+    }
+    return await response.text();
+}
+
 async function loadPrompts(promptsPath) {
-    const raw = await fs.readFile(promptsPath, 'utf8');
+    let raw;
+
+    if (isUrl(promptsPath)) {
+        console.log('Fetching from URL...');
+        raw = await fetchFromUrl(promptsPath);
+    } else {
+        raw = await fs.readFile(promptsPath, 'utf8');
+    }
+
     const parsed = JSON.parse(raw);
     const prompts = parsed[PROMPTS_KEY];
 
@@ -94,15 +119,22 @@ async function main() {
     const promptsPathArg = process.argv
         .slice(2)
         .find((arg) => arg && arg !== '--');
-    const promptsPath = promptsPathArg
+    const promptsPath = promptsPathArg && isUrl(promptsPathArg)
+        ? promptsPathArg
+        : promptsPathArg
         ? path.resolve(process.cwd(), promptsPathArg)
         : DEFAULT_PROMPTS_PATH;
 
-    const relativePath = path.relative(ROOT_DIR, promptsPath);
-    const displayPath =
-        relativePath && !relativePath.startsWith('..')
-            ? relativePath
-            : path.basename(promptsPath);
+    let displayPath;
+    if (isUrl(promptsPath)) {
+        displayPath = promptsPath;
+    } else {
+        const relativePath = path.relative(ROOT_DIR, promptsPath);
+        displayPath =
+            relativePath && !relativePath.startsWith('..')
+                ? relativePath
+                : path.basename(promptsPath);
+    }
 
     console.log(`Using prompts file: ${displayPath}`);
 
