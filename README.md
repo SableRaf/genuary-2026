@@ -1,14 +1,12 @@
-# Genuary 2025 Speed run
+# Genuary 2026 Template
 
-- 🚂 [Watch the archive of the live stream](https://www.youtube.com/watch?v=c1BPd8omBro)
-- 🎨 [The Genuary 2025 website with all prompts](https://genuary.art)
+[The Genuary 2026 website with all prompts](https://genuary.art)
 
-## Ground Rules
+Genuary is a month-long challenge to create generative art every day in January. Each day has a different prompt to inspire. This repository provides a template to help you get started with your Genuary 2026 projects.
 
-- The goal is no more than 4 minutes per prompt!
-- Can start from a Coding Train example, but must change at least 1 line of code
-- Using only the p5.js web editor of the Processing development environment
-- No "AI" tools (unless the prompt calls for it)
+## 📕 Prompts
+
+The official prompts will be posted on the [Genuary 2026 website](https://genuary.art/prompts).
 
 ## 🌄 Gallery
 
